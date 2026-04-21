@@ -1,0 +1,222 @@
+﻿@model FutureTechStudentApp.Models.Student
+
+@{
+    Layout = null; // Independent page
+    ViewData["Title"] = "Security Portal | Confirm Deletion";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Professional Assets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Brand Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #2d3436;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        /* Top Navigation */
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .danger-header {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 20px;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(220, 53, 69, 0.1);
+        }
+
+        /* Student Identity Box */
+        .identity-box {
+            background: white;
+            border-radius: 1rem;
+            padding: 25px;
+            margin: 30px;
+            border: 1px solid #f1f2f6;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .student-img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 25px;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        /* Callout Area */
+        .action-callout {
+            background: rgba(13, 110, 253, 0.03);
+            border: 1px solid rgba(13, 110, 253, 0.08);
+            border-radius: 1rem;
+            padding: 25px;
+            margin: 0 30px 30px;
+        }
+
+        /* Button Styling */
+        .btn-purge {
+            background: #dc3545;
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.2);
+        }
+
+            .btn-purge:hover {
+                background: #c0392b;
+                transform: translateY(-2px);
+                box-shadow: 0 12px 25px rgba(220, 53, 69, 0.3);
+                color: white;
+            }
+
+        .btn-safe {
+            background: #2d3436;
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 10px 25px;
+            border: none;
+            transition: 0.2s;
+        }
+
+            .btn-safe:hover {
+                background: #000;
+                color: white;
+            }
+
+        .status-pill {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            background: #fff5f5;
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Professional Top Nav -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-glass sticky-top mb-5 py-3">
+        <div class="container">
+            <a asp-action="Index" class="text-decoration-none fw-bold text-dark">
+                <i class="bi bi-arrow-left me-1"></i> Dashboard
+            </a>
+            <span class="navbar-brand ms-auto fw-bold text-danger" style="font-size: 1rem;">
+                <i class="bi bi-shield-lock-fill me-1"></i> Institutional Security <span class="text-dark fw-light">Portal</span>
+            </span>
+        </div>
+    </nav>
+
+    <main class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-xl-6">
+
+                <div class="glass-panel">
+                    <!-- Warning Header -->
+                    <div class="danger-header text-center">
+                        <i class="bi bi-exclamation-octagon-fill fs-4 me-2"></i> Confirm Permanent Deletion
+                    </div>
+
+                    <div class="p-2 text-center">
+                        <div class="mt-4 px-4">
+                            <span class="status-pill mb-3 d-inline-block">Irreversible Operation</span>
+                            <h2 class="fw-bold text-dark">Are you sure?</h2>
+                            <p class="text-muted small">This action will remove the student record and profile assets from <strong>Azure Cosmos DB</strong> and <strong>Blob Storage</strong> permanently.</p>
+                        </div>
+
+                        <!-- Identity Card -->
+                        <div class="identity-box">
+                            <img src="@Model.ProfileImageUrl"
+                                 class="student-img"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=@Model.FirstName+@Model.LastName&background=dc3545&color=fff'">
+
+                            <h4 class="fw-bold mb-0">@Model.FirstName @Model.LastName</h4>
+                            <p class="text-muted small mb-2">@Model.Email</p>
+                            <span class="badge rounded-pill bg-light text-dark border px-3">ID: @Model.Id.Substring(0, 8)</span>
+                        </div>
+
+                        <!-- Safe Alternative -->
+                        <div class="action-callout text-start">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-info-circle-fill text-primary fs-5 me-2"></i>
+                                <h6 class="fw-bold mb-0">Recommended Strategy</h6>
+                            </div>
+                            <p class="small text-muted mb-3">Instead of a total purge, you can deactivate this student. They will no longer appear on active lists, but their data is preserved for academic history.</p>
+
+                            <form asp-action="SoftDelete" method="post" class="m-0">
+                                <input type="hidden" asp-for="Id" />
+                                <button type="submit" class="btn btn-safe btn-sm">
+                                    <i class="bi bi-person-dash me-1"></i> Deactivate Student Instead
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Dangerous Final Action -->
+                        <div class="px-5 pb-5">
+                            <form asp-action="Delete">
+                                <input type="hidden" asp-for="Id" />
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-purge btn-lg">
+                                        <i class="bi bi-trash3-fill me-2"></i> Delete Forever
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-link text-muted text-decoration-none small fw-bold mt-2">
+                                        No, Cancel & Return
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Audit Trail -->
+                <div class="mt-4 text-center">
+                    <small class="text-muted text-uppercase tracking-widest" style="font-size: 0.65rem;">
+                        Authorized By Administrator: <strong class="text-dark">@User.Identity?.Name</strong>
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

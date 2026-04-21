@@ -1,0 +1,68 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "System Error - FutureTech";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 text-center">
+
+            <!-- Professional Error Icon -->
+            <div class="mb-4">
+                <i class="bi bi-exclamation-triangle-fill text-danger display-1 shadow-sm"></i>
+            </div>
+
+            <!-- Main Error Message -->
+            <h1 class="fw-bold text-dark">Oops! System Error</h1>
+            <p class="lead text-muted mb-4">
+                We encountered an unexpected issue while communicating with the Azure Cloud services.
+            </p>
+
+            <!-- Error Reference Card -->
+            <div class="card border-0 shadow-sm bg-light mb-4 py-3">
+                <div class="card-body">
+                    <p class="mb-1 text-muted small text-uppercase fw-bold">Support Reference ID</p>
+                    @if (Model.ShowRequestId)
+                    {
+                        <code class="fs-5 text-primary fw-bold">@Model.RequestId</code>
+                    }
+                    else
+                    {
+                        <code class="fs-5 text-primary fw-bold">N/A-LOCAL-DEBUG</code>
+                    }
+                </div>
+            </div>
+
+            <!-- Helpful Navigation -->
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                <a href="javascript:history.back()" class="btn btn-primary btn-lg px-4 shadow-sm">
+                    <i class="bi bi-arrow-left me-2"></i>Go Back
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-house-door me-2"></i>Return Home
+                </a>
+            </div>
+
+            <!-- Technical Support Contact (From Study Guide Page 2) -->
+            <div class="alert alert-info border-0 shadow-sm text-start py-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-info-circle-fill fs-3 me-3 text-info"></i>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Need Technical Assistance?</h6>
+                        <p class="mb-0 small text-muted">
+                            Please contact the <strong>IT Helpdesk</strong> or
+                            email the module lecturer <strong>Olalekan Tiamiyu</strong> at
+                            <a href="mailto:tiamiyuo@@dut.ac.za" class="text-decoration-none">tiamiyuo@@dut.ac.za</a>
+                            with your Request ID.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

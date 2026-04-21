@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+
+<ul class="navbar-nav">
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle btn btn-light rounded-pill px-3 shadow-sm border" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle text-primary me-1"></i> @User.Identity.Name
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item py-2" asp-controller="Student" asp-action="Index"><i class="bi bi-grid me-2"></i>Dashboard</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="dropdown-item text-danger py-2"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold" asp-controller="Account" asp-action="Login">
+                <i class="bi bi-shield-lock-fill me-2"></i>Admin Login
+            </a>
+        </li>
+    }
+</ul>

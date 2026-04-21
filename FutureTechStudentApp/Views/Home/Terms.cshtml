@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Terms of Service";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 15, 30, 0.9), rgba(10, 15, 30, 0.9)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            background: #0dcaf0;
+            color: #000;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terms-content h4 {
+            color: #0d6efd;
+            border-left: 4px solid #0dcaf0;
+            padding-left: 15px;
+        }
+
+        .btn-return {
+            border-radius: 50px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+        }
+
+            .btn-return:hover {
+                background: #0d6efd;
+                color: white;
+                transform: scale(1.05);
+            }
+    </style>
+</head>
+<body class="py-5">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="glass-card p-5">
+                    <!-- Header -->
+                    <div class="d-flex align-items-center mb-5">
+                        <div class="header-icon me-4"><i class="bi bi-shield-check fs-2"></i></div>
+                        <div>
+                            <h1 class="fw-bold mb-0">Terms of Service</h1>
+                            <p class="text-muted mb-0">Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="terms-content">
+                        <h4 class="fw-bold mt-4">1. Acceptance of Terms</h4>
+                        <p>By accessing and using the FutureTech Staff Access Portal, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this portal.</p>
+
+                        <h4 class="fw-bold mt-4">2. Use of Portal</h4>
+                        <p>This system is strictly for authorized personnel of FutureTech. You agree to use this portal only for lawful purposes. Unauthorized access, modification, or deletion of records is strictly prohibited.</p>
+
+                        <h4 class="fw-bold mt-4">3. Account Security</h4>
+                        <p>You are responsible for maintaining the confidentiality of your credentials. Notify IT Administration immediately of any suspected breach.</p>
+
+                        <h4 class="fw-bold mt-4">4. Data Privacy</h4>
+                        <p>All data managed within this portal is subject to FutureTech's Privacy Policy and applicable data protection laws. Disclosure of sensitive information to unauthorized parties is a violation of contract.</p>
+
+                        <h4 class="fw-bold mt-4">5. System Monitoring</h4>
+                        <p>FutureTech reserves the right to monitor portal usage for security, performance, and compliance purposes. Activity logs are subject to audit.</p>
+                    </div>
+
+                    <!-- Footer Action -->
+                    <div class="mt-5 pt-4 border-top text-center">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-return">
+                            <i class="bi bi-arrow-left me-2"></i> Back to Portal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

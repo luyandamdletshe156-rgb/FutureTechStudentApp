@@ -1,0 +1,292 @@
+﻿@{
+    Layout = null; // Self-contained page
+    ViewData["Title"] = "Privacy and Security Policy";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FutureTech Academy</title>
+
+    <!-- Professional Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Consistent Background & Font from Homepage */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(10, 15, 30, 0.85), rgba(10, 15, 30, 0.85)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+        }
+
+        /* Navbar */
+        .navbar-glass {
+            background: rgba(10, 15, 30, 0.6) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            color: #fff !important;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+            .nav-brand:hover {
+                color: #0dcaf0 !important;
+            }
+
+        /* Page Header */
+        .page-header {
+            padding: 80px 0;
+        }
+
+        /* Glass Accordion Styling */
+        .accordion-item {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px !important;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-button {
+            background-color: transparent !important;
+            color: #fff !important;
+            font-weight: 600;
+            box-shadow: none !important;
+        }
+
+            /* Style the accordion icon to be white */
+            .accordion-button::after {
+                filter: invert(1) grayscale(1) brightness(200%);
+            }
+
+            .accordion-button:not(.collapsed) {
+                background: rgba(13, 202, 240, 0.1) !important;
+                border-bottom: 1px solid rgba(13, 202, 240, 0.2);
+            }
+
+            .accordion-button i {
+                color: #0dcaf0; /* Cyan icon color */
+            }
+
+        .accordion-body {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .accordion-item:hover {
+            border-color: rgba(13, 202, 240, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Contact Box */
+        .contact-box {
+            padding: 40px;
+        }
+
+        /* Floating Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            transition: all 0.3s ease;
+        }
+
+            .print-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(13, 202, 240, 0.6);
+            }
+
+        @@media print {
+            .print-btn, .navbar-glass, .contact-box {
+                display: none !important;
+            }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+
+            .page-header, .accordion-item {
+                color: #000 !important;
+            }
+        }
+
+        /* Animations */
+        .animate-up {
+            opacity: 0;
+            animation: slideUpFade 0.8s forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        @@keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Glass Top Nav -->
+    <nav class="navbar navbar-dark navbar-glass sticky-top py-3">
+        <div class="container">
+            <a class="nav-brand" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-arrow-left-circle me-2"></i> Back to Home
+            </a>
+            <span class="text-light opacity-50 small fw-bold">ID: FT-POLICY-2026</span>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header text-center">
+        <div class="container animate-up">
+            <i class="bi bi-shield-shaded text-info display-2 mb-3"></i>
+            <h1 class="fw-bold display-5">Privacy & Security Policy</h1>
+            <p class="lead text-light opacity-75 mx-auto" style="max-width: 600px;">
+                Your trust is our priority. Here’s our commitment to protecting your data.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate-up delay-1">
+
+                <p class="text-light opacity-75 mb-5 text-center">
+                    At FutureTech Academy, we are committed to transparency and security. This policy outlines what data we collect, how it's used, and the robust measures we take to keep it safe.
+                </p>
+
+                <!-- Rules List -->
+                <div class="accordion" id="privacyRules">
+                    <!-- Rule 1 -->
+                    <div class="accordion-item glass-panel">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#rule1">
+                                <i class="bi bi-collection-fill me-3 fs-5"></i> 1. What Information We Collect
+                            </button>
+                        </h2>
+                        <div id="rule1" class="accordion-collapse collapse show" data-bs-parent="#privacyRules">
+                            <div class="accordion-body">
+                                We collect only the essential information required for student administration:
+                                <ul class="mt-2">
+                                    <li><strong>Personal Identifiers:</strong> Full name and student ID.</li>
+                                    <li><strong>Contact Information:</strong> Email address and phone number for communication.</li>
+                                    <li><strong>Profile Media:</strong> A profile picture for visual identification within the system.</li>
+                                    <li><strong>Enrollment Status:</strong> Your current academic standing (e.g., Active, Graduated).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2 -->
+                    <div class="accordion-item glass-panel">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule2">
+                                <i class="bi bi-cloud-lock-fill me-3 fs-5"></i> 2. How We Secure Your Data
+                            </button>
+                        </h2>
+                        <div id="rule2" class="accordion-collapse collapse" data-bs-parent="#privacyRules">
+                            <div class="accordion-body">
+                                All data is protected using enterprise-grade Microsoft Azure cloud services:
+                                <ul class="mt-2">
+                                    <li><strong>Data Encryption:</strong> Student records are encrypted at rest and in transit, rendering them unreadable to unauthorized parties.</li>
+                                    <li><strong>Secure Blob Storage:</strong> Profile pictures are stored in private Azure Blob containers. Access is granted only through short-lived, secure access signatures (SAS tokens).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3 -->
+                    <div class="accordion-item glass-panel">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule3">
+                                <i class="bi bi-person-check-fill me-3 fs-5"></i> 3. Data Access & Control
+                            </button>
+                        </h2>
+                        <div id="rule3" class="accordion-collapse collapse" data-bs-parent="#privacyRules">
+                            <div class="accordion-body">
+                                Access to student data is strictly limited to authorized academy staff who authenticate via a secure Single Sign-On (SSO) provider (e.g., Google). We do not store staff passwords on our servers.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4 -->
+                    <div class="accordion-item glass-panel">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule4">
+                                <i class="bi bi-journal-check me-3 fs-5"></i> 4. Your Rights (POPIA Compliance)
+                            </button>
+                        </h2>
+                        <div id="rule4" class="accordion-collapse collapse" data-bs-parent="#privacyRules">
+                            <div class="accordion-body">
+                                In accordance with South Africa's POPIA act, you have the right to request access to your personal information, request corrections, or request deletion of your data from our systems.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Box -->
+                <div class="contact-box glass-panel mt-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h4 class="fw-bold mb-2">Have a Privacy Concern?</h4>
+                            <p class="mb-0 opacity-75 small">Contact our Data Protection Officer for any inquiries or to exercise your data rights.</p>
+                            <a href="mailto:privacy@futuretech-academy.com" class="btn btn-info btn-sm mt-3 fw-bold rounded-pill px-4 text-dark">
+                                <i class="bi bi-envelope-fill me-2"></i> Contact DPO
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center d-none d-md-block">
+                            <i class="bi bi-envelope-heart display-3 opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <p class="text-light opacity-50 small">Last Updated: February 2026 | Version 2.1.0 | Status: <span class="text-info fw-bold">Active</span></p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Print Button -->
+    <button onclick="window.print()" class="btn btn-info rounded-circle shadow print-btn p-3 d-flex align-items-center justify-content-center">
+        <i class="bi bi-printer-fill fs-4 text-dark"></i>
+    </button>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
