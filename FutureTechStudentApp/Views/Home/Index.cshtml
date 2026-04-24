@@ -9,143 +9,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(rgba(10, 15, 30, 0.8), rgba(10, 15, 30, 0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-            background-size: cover;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .navbar-glass {
-            background: rgba(10, 15, 30, 0.6) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-        }
-
-        .hero-section {
-            padding: 120px 0 80px;
-            min-height: 70vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-title {
-            font-weight: 800;
-            background: -webkit-linear-gradient(45deg, #0dcaf0, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-
-        .btn-main {
-            border-radius: 50px;
-            padding: 12px 35px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-info {
-            background-color: #0dcaf0;
-            border: none;
-            color: #000;
-            box-shadow: 0 0 15px rgba(13, 202, 240, 0.4);
-        }
-
-            .btn-info:hover {
-                background-color: #ffffff;
-                box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
-                transform: translateY(-2px);
-            }
-
-        .feature-card {
-            border-radius: 20px;
-            padding: 40px 30px;
-            height: 100%;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-            .feature-card:hover {
-                transform: translateY(-15px);
-                border-color: rgba(13, 202, 240, 0.4);
-                box-shadow: 0 15px 30px rgba(13, 202, 240, 0.15);
-                background: rgba(255, 255, 255, 0.08);
-            }
-
-        .icon-box {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            background: rgba(13, 202, 240, 0.1);
-            border: 1px solid rgba(13, 202, 240, 0.3);
-        }
-
-        .stats-ribbon {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-        }
-
-        footer {
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 30px 0;
-            backdrop-filter: blur(10px);
-        }
-
-        .animate-up {
-            opacity: 0;
-            animation: slideUpFade 0.8s forwards;
-        }
-
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.6s;
-        }
-
-        @@keyframes slideUpFade {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(rgba(10, 15, 30, 0.8), rgba(10, 15, 30, 0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed; background-size: cover; color: #ffffff; overflow-x: hidden; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+        .navbar-glass { background: rgba(10, 15, 30, 0.6) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-brand { font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; }
+        .hero-section { padding: 120px 0 80px; min-height: 70vh; display: flex; align-items: center; }
+        .hero-title { font-weight: 800; background: -webkit-linear-gradient(45deg, #0dcaf0, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        .btn-main { border-radius: 50px; padding: 12px 35px; font-weight: 600; transition: all 0.3s ease; }
+        .btn-info { background-color: #0dcaf0; border: none; color: #000; box-shadow: 0 0 15px rgba(13, 202, 240, 0.4); }
+        .btn-info:hover { background-color: #ffffff; transform: translateY(-2px); }
+        .feature-card { border-radius: 20px; padding: 40px 30px; height: 100%; transition: all 0.4s; }
+        .feature-card:hover { transform: translateY(-15px); background: rgba(255, 255, 255, 0.08); }
+        .icon-box { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.3); }
+        .stats-ribbon { border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
+        footer { background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; backdrop-filter: blur(10px); }
+        .animate-up { opacity: 0; animation: slideUpFade 0.8s forwards; }
+        @@keyframes slideUpFade { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -155,12 +38,8 @@
             <a class="navbar-brand nav-brand text-white" href="#">
                 <i class="bi bi-hexagon-fill text-info me-2"></i> FUTURETECH
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <div class="d-flex align-items-center">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <span class="text-light me-4"><i class="bi bi-person-circle me-1"></i> Hello, <strong>@(User.Identity?.Name ?? "Admin")</strong></span>
@@ -170,8 +49,7 @@
                     }
                     else
                     {
-                        <!-- 🚨 REMOVED REGISTER BUTTON HERE -->
-                        <a asp-controller="Account" asp-action="Login" class="btn btn-info btn-sm rounded-pill px-4 fw-bold shadow-sm">Admin Login</a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-info btn-sm rounded-pill px-4 fw-bold">Admin Login</a>
                     }
                 </div>
             </div>
@@ -180,102 +58,43 @@
 
     <header class="hero-section text-center">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 animate-up">
-                    <span class="badge rounded-pill bg-danger text-white mb-3 px-3 py-2 fw-bold"><i class="bi bi-shield-lock-fill"></i> Authorized Personnel Only</span>
-                    <h1 class="display-3 hero-title">Student Management Reimagined</h1>
-                    <p class="lead mb-5 opacity-75 fw-light text-light">
-                        A seamless, secure, and intuitive platform for administrators to manage student records, profile data, and cloud-stored media in real time.
-                    </p>
-
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <a asp-controller="Student" asp-action="Index" class="btn btn-info btn-lg btn-main">
-                                <i class="bi bi-person-lines-fill me-2"></i> Open Dashboard
-                            </a>
-                        }
-                        else
-                        {
-                            <!-- 🚨 REMOVED REGISTER BUTTON HERE -->
-                            <a asp-controller="Account" asp-action="Login" class="btn btn-info btn-lg btn-main shadow-sm">
-                                <i class="bi bi-google me-2"></i> Admin Login via Google
-                            </a>
-                        }
-                    </div>
+            <div class="col-lg-8 mx-auto animate-up">
+                <h1 class="display-3 hero-title">Student Management Reimagined</h1>
+                <p class="lead mb-5 opacity-75">Secure administrative portal for cloud-based student records.</p>
+                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Student" asp-action="Index" class="btn btn-info btn-lg btn-main"><i class="bi bi-person-lines-fill me-2"></i> Dashboard</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-info btn-lg btn-main"><i class="bi bi-shield-lock-fill me-2"></i> Login (Google / GitHub)</a>
+                    }
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="stats-ribbon py-4 animate-up delay-1">
-        <div class="container text-center">
-            <div class="row g-4 opacity-75">
-                <div class="col-md-4">
-                    <h4 class="mb-0 text-info fw-bold">99.9%</h4>
-                    <small class="text-uppercase tracking-wide">Uptime</small>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="mb-0 text-info fw-bold">AES-256</h4>
-                    <small class="text-uppercase tracking-wide">Encryption</small>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="mb-0 text-info fw-bold">Real-Time</h4>
-                    <small class="text-uppercase tracking-wide">Data Sync</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="container my-5 py-5">
-        <div class="text-center mb-5 animate-up delay-1">
-            <h2 class="fw-bold">Why Choose FutureTech?</h2>
-            <p class="text-light opacity-50">Built on modern Azure infrastructure for maximum reliability.</p>
-        </div>
-
-        <div class="row g-4 text-center">
-            <div class="col-md-4 animate-up delay-1">
-                <div class="glass-panel feature-card">
-                    <div class="icon-box text-info display-6"><i class="bi bi-database-fill-zap"></i></div>
-                    <h5 class="fw-bold text-white">NoSQL Database</h5>
-                    <p class="opacity-75 small mb-0">Powered by Azure Cosmos DB. Student records are saved instantly and distributed globally.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4 animate-up delay-2">
-                <div class="glass-panel feature-card">
-                    <div class="icon-box text-info display-6"><i class="bi bi-cloud-arrow-up-fill"></i></div>
-                    <h5 class="fw-bold text-white">Blob Storage</h5>
-                    <p class="opacity-75 small mb-0">Student profile pictures and documents are stored securely using SAS tokens in isolated Azure Blob storage.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4 animate-up delay-3">
-                <div class="glass-panel feature-card">
-                    <div class="icon-box text-info display-6"><i class="bi bi-google"></i></div>
-                    <h5 class="fw-bold text-white">SSO Authentication</h5>
-                    <p class="opacity-75 small mb-0">Sign in securely using Google OAuth. We ensure zero passwords are stored locally on our servers.</p>
-                </div>
-            </div>
+    <section class="container my-5 py-5 text-center">
+        <div class="row g-4">
+            <div class="col-md-4"><div class="glass-panel feature-card"><div class="icon-box text-info display-6"><i class="bi bi-database-fill-zap"></i></div><h5>NoSQL Database</h5><p class="small opacity-75">Powered by Azure Cosmos DB.</p></div></div>
+            <div class="col-md-4"><div class="glass-panel feature-card"><div class="icon-box text-info display-6"><i class="bi bi-cloud-arrow-up-fill"></i></div><h5>Blob Storage</h5><p class="small opacity-75">Secure image handling via SAS.</p></div></div>
+            <div class="col-md-4"><div class="glass-panel feature-card"><div class="icon-box text-info display-6"><i class="bi bi-github"></i></div><h5>OAuth 2.0</h5><p class="small opacity-75">Secure Google/GitHub Auth.</p></div></div>
         </div>
     </section>
 
     <footer>
-        <div class="container">
+        <div class="container text-center text-md-start">
             <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 fw-bold tracking-wide"><i class="bi bi-hexagon-fill text-info me-1"></i> FUTURETECH ACADEMY</p>
-                    <small class="opacity-50">© 2026. Fully compliant with student data privacy laws.</small>
+                <div class="col-md-6">
+                    <p class="mb-0 fw-bold"><i class="bi bi-hexagon-fill text-info me-1"></i> FUTURETECH ACADEMY</p>
                 </div>
-                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
-                    <a asp-action="Privacy" class="text-info text-decoration-none small me-4">Privacy Policy</a>
-                    <a asp-action="Terms" class="text-light opacity-75 text-decoration-none small me-4">Terms of Service</a>
-                    <span class="badge bg-info text-dark rounded-pill">v2.0 Beta</span>
+                <div class="col-md-6 text-md-end">
+                    <a asp-controller="Home" asp-action="Privacy" class="text-info text-decoration-none small me-4">Privacy Policy</a>
+                    <a asp-controller="Home" asp-action="Terms" class="text-light opacity-75 text-decoration-none small">Terms of Service</a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
