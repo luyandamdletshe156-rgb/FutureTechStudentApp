@@ -6,6 +6,9 @@ namespace FutureTechStudentApp.Services
 {
     public class BlobStorageService : IBlobStorageService
     {
+        // The BlobServiceClient is the main client for interacting with Azure Blob Storage.
+        // It is initialized in the constructor using a connection string from the configuration.
+
         private readonly BlobServiceClient _blobServiceClient;
         private readonly string _containerName = "student-images";
 
@@ -14,12 +17,12 @@ namespace FutureTechStudentApp.Services
             _blobServiceClient = new BlobServiceClient(configuration["BlobStorage:ConnectionString"]);
         }
 
-        // --- UPLOAD: Returns clean filename for Cosmos DB storage ---
+   
         public async Task<string> UploadImageAsync(IFormFile file, string studentId)
         {
             if (file == null || file.Length == 0) throw new ArgumentException("No file provided.");
 
-            // Validation
+            
             if (file.Length > 2 * 1024 * 1024) throw new ArgumentException("File exceeds 2MB limit.");
             var ext = Path.GetExtension(file.FileName).ToLower();
             if (ext != ".jpg" && ext != ".jpeg" && ext != ".png") throw new ArgumentException("Only JPEG/PNG files are allowed.");
@@ -36,7 +39,7 @@ namespace FutureTechStudentApp.Services
             return fileName;
         }
 
-        // --- GET SECURE URL: Generates fresh 1-hour SAS tokens ---
+
         public string GetSecureImageUrl(string? fileName)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -44,7 +47,7 @@ namespace FutureTechStudentApp.Services
                 return "https://ui-avatars.com/api/?name=Student&background=random";
             }
 
-            // Cleanup: Ensure we are only working with the filename, not an old expired URI
+        
             if (fileName.Contains("?sv="))
             {
                 try
@@ -60,7 +63,7 @@ namespace FutureTechStudentApp.Services
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            // Generate SAS Token
+     
             BlobSasBuilder sasBuilder = new BlobSasBuilder()
             {
                 BlobContainerName = _containerName,
@@ -73,19 +76,19 @@ namespace FutureTechStudentApp.Services
             return blobClient.GenerateSasUri(sasBuilder).ToString();
         }
 
-        // --- DELETE: Removes orphaned blobs from Azure ---
+      
         public async Task DeleteImageAsync(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) return;
 
-            // Handle cases where a full URI might have been passed
+    
             if (fileName.Contains("?sv="))
             {
                 try
                 {
                     fileName = Path.GetFileName(new Uri(fileName).LocalPath);
                 }
-                catch { /* Ignore */ }
+                catch { }
             }
 
             try
@@ -93,12 +96,12 @@ namespace FutureTechStudentApp.Services
                 var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
                 var blobClient = containerClient.GetBlobClient(fileName);
 
-                // Use DeleteIfExists to prevent 404 errors if the file is already gone
+       
                 await blobClient.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots);
             }
             catch (Exception ex)
             {
-                // Log failure to clean up blob
+              
                 throw new Exception($"Failed to delete blob {fileName}: {ex.Message}");
             }
         }

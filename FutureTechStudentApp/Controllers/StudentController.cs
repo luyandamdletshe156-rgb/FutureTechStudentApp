@@ -4,17 +4,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using System.Security.Claims;
-
+using System.IO; 
+using System.Linq; 
 namespace FutureTechStudentApp.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class StudentController : Controller
     {
+        /*These are Dependency Injection (DI) fields, ASP.NET Core automatically
+        provides instances of your database service (CosmosDB), file storage service (Azure Blob),
+        and logging service. PageSize dictates that only 5 students will be shown per page on the Index list.*/
+
         private readonly ICosmosDbService _cosmosDbService;
         private readonly IBlobStorageService _blobStorageService;
         private readonly ILogger<StudentController> _logger;
         private const int PageSize = 5;
 
+        // The constructor initializes the controller with the injected services. This allows the controller to interact with the database, file storage, and logging without needing to know the details of how those services are implemented.
         public StudentController(ICosmosDbService cosmosDbService, IBlobStorageService blobStorageService, ILogger<StudentController> logger)
         {
             _cosmosDbService = cosmosDbService;
@@ -22,39 +28,65 @@ namespace FutureTechStudentApp.Controllers
             _logger = logger;
         }
 
+   
         private string CurrentAdminInfo =>
             $"{User.Identity?.Name ?? "Unknown Admin"} ({User.FindFirstValue(ClaimTypes.Email) ?? "N/A"})";
 
+    
         public async Task<IActionResult> Index(string searchString, int page = 1)
         {
-            int currentPage = page < 1 ? 1 : page;
+        
+            ViewData["CurrentFilter"] = searchString;
 
+            int currentPage = page;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+      
+                if (TempData["LastSearch"]?.ToString() != searchString)
+                {
+                    currentPage = 1;
+                }
+                TempData["LastSearch"] = searchString;
+                TempData.Keep("LastSearch"); 
+            }
+            else
+            {
+                TempData["LastSearch"] = null;
+            }
+
+            currentPage = currentPage < 1 ? 1 : currentPage;
+
+            // 3. Build the SQL string
             string sql = "SELECT * FROM c WHERE 1=1";
-            var queryDef = new QueryDefinition(sql);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                sql += " AND (CONTAINS(LOWER(c.firstName), @search) OR CONTAINS(LOWER(c.lastName), @search) OR CONTAINS(LOWER(c.id), @search))";
+            }
+            sql += " OFFSET @offset LIMIT @limit";
+
+            var queryDef = new QueryDefinition(sql)
+                .WithParameter("@offset", (currentPage - 1) * PageSize)
+                .WithParameter("@limit", PageSize);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                string search = searchString.ToLower();
-                sql += " AND (CONTAINS(LOWER(c.firstName), @search) OR CONTAINS(LOWER(c.lastName), @search) OR CONTAINS(LOWER(c.id), @search))";
-                queryDef = new QueryDefinition(sql).WithParameter("@search", search);
+                queryDef = queryDef.WithParameter("@search", searchString.ToLower());
             }
 
-            sql += " OFFSET @offset LIMIT @limit";
-            queryDef = queryDef.WithParameter("@offset", (currentPage - 1) * PageSize)
-                               .WithParameter("@limit", PageSize);
-
+           
             var students = await _cosmosDbService.GetStudentsAsync(queryDef);
             var totalCount = await _cosmosDbService.GetCountAsync(searchString);
 
+       
             foreach (var student in students)
             {
                 if (!string.IsNullOrEmpty(student.ProfileImageUrl))
                     student.ProfileImageUrl = _blobStorageService.GetSecureImageUrl(student.ProfileImageUrl);
             }
 
-            ViewData["CurrentFilter"] = searchString;
+       
             ViewBag.CurrentPage = currentPage;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+            ViewBag.TotalPages = totalCount == 0 ? 1 : (int)Math.Ceiling((double)totalCount / PageSize);
             ViewBag.TotalCount = totalCount;
             ViewBag.ActiveCount = await _cosmosDbService.GetActiveCountAsync();
 
@@ -67,16 +99,39 @@ namespace FutureTechStudentApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Student student, IFormFile? profilePicture)
         {
+          
+            if (profilePicture != null)
+            {
+           
+                const long maxFileSize = 2 * 1024 * 1024; 
+                if (profilePicture.Length > maxFileSize)
+                {
+                    ModelState.AddModelError("", "The profile picture must be less than 2MB.");
+                }
+
+               
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                var extension = Path.GetExtension(profilePicture.FileName).ToLowerInvariant();
+
+      
+                var allowedMimeTypes = new[] { "image/jpeg", "image/png" };
+
+                if (!allowedExtensions.Contains(extension) || !allowedMimeTypes.Contains(profilePicture.ContentType))
+                {
+                    ModelState.AddModelError("", "Invalid file type. Only JPG and PNG images are allowed.");
+                }
+            }
+
+        
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // 🚨 NEW: Professional Catchy ID Generation (FT-2026-####)
                     string generatedId;
                     bool exists;
                     do
                     {
-                        int randomPart = new Random().Next(1000, 9999);
+                        int randomPart = Random.Shared.Next(1000, 9999);
                         generatedId = $"FT-{DateTime.Now.Year}-{randomPart}";
                         var check = await _cosmosDbService.GetStudentAsync(generatedId);
                         exists = (check != null);
@@ -97,10 +152,12 @@ namespace FutureTechStudentApp.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Registration Failure");
-                    ModelState.AddModelError("", "File upload failed. Please ensure the image is a valid JPG/PNG under 2MB.");
+                    _logger.LogError(ex, "Registration Failure for Student ID: {Id}", student.Id);
+                    ModelState.AddModelError("", "An error occurred while saving the student to the database.");
                 }
             }
+
+   
             return View(student);
         }
 
@@ -129,6 +186,7 @@ namespace FutureTechStudentApp.Controllers
                 existingStudent.Email = student.Email;
                 existingStudent.MobileNumber = student.MobileNumber;
                 existingStudent.EnrolmentStatus = student.EnrolmentStatus;
+                // Note: Image update logic is intentionally absent here per original design
 
                 await _cosmosDbService.UpdateStudentAsync(existingStudent.Id, existingStudent);
                 TempData["SuccessMessage"] = "Student details updated successfully.";

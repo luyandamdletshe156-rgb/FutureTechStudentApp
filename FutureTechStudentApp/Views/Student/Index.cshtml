@@ -2,19 +2,21 @@
 
 @{
     Layout = null;
-    ViewData["Title"] = "Staff Dashboard | FutureTech";
+    ViewData["Title"] = "Admin Dashboard | FutureTech";
 
     int totalStudents = ViewBag.TotalCount ?? 0;
     int activeStudents = ViewBag.ActiveCount ?? 0;
     int inactiveStudents = totalStudents - activeStudents;
 
-    string staffName = User.Identity?.Name ?? "Staff Member";
-    string staffNumber = User.FindFirst("StaffNumber")?.Value ?? "FT-0001";
-    string department = User.FindFirst("Department")?.Value ?? "IT";
+    string staffName = User.Identity?.Name ?? "Admin User";
+    string staffNumber = User.FindFirst("StaffNumber")?.Value ?? "Admin";
+    string department = User.FindFirst("Department")?.Value ?? "Management";
     string initials = string.Concat(staffName.Where(c => char.IsUpper(c)));
+    if (string.IsNullOrEmpty(initials)) { initials = "AD"; }
 
     int currentPage = ViewBag.CurrentPage ?? 1;
-    int totalPages = ViewBag.TotalPages ?? 1;
+    int totalPages = (ViewBag.TotalPages ?? 1) == 0 ? 1 : ViewBag.TotalPages;
+
     bool isAdmin = User.IsInRole("Admin");
 }
 
@@ -69,17 +71,6 @@
             font-size: 0.85rem;
         }
 
-        .stat-card {
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-            .stat-card:hover {
-                transform: translateY(-8px);
-                background: rgba(255, 255, 255, 0.95);
-            }
-
         .pulse-live {
             width: 8px;
             height: 8px;
@@ -90,22 +81,10 @@
             animation: pulse 2s infinite;
         }
 
-        /* Fixed Keyframes by ensuring no extra whitespace or parser confusion */
         @@keyframes pulse {
-            0%
-
-        {
-            box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.7);
-        }
-
-        70% {
-            box-shadow: 0 0 0 10px rgba(0, 184, 148, 0);
-        }
-
-        100% {
-            box-shadow: 0 0 0 0 rgba(0, 184, 148, 0);
-        }
-
+            0% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 184, 148, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0); }
         }
 
         .table thead th {
@@ -144,11 +123,11 @@
             text-decoration: none;
         }
 
-            .btn-action-circle:hover {
-                background: #0d6efd;
-                color: white;
-                transform: scale(1.1);
-            }
+        .btn-action-circle:hover {
+            background: #0d6efd;
+            color: white;
+            transform: scale(1.1);
+        }
 
         .pagination .page-link {
             border: none;
@@ -162,7 +141,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light navbar-glass sticky-top py-2">
         <div class="container">
-            <a class="navbar-brand nav-brand-text" asp-controller="Home" asp-action="Index">
+            <a class="navbar-brand nav-brand-text" asp-controller="Student" asp-action="Index">
                 <i class="bi bi-cpu-fill"></i> FUTURETECH <span class="text-dark fw-light">Portal</span>
             </a>
             <div class="ms-auto d-flex align-items-center">
@@ -171,7 +150,9 @@
                     <small class="text-primary fw-bold" style="font-size: 0.7rem;">ID: @staffNumber • @department</small>
                 </div>
                 <div class="staff-avatar me-3">@initials</div>
-                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0"><button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">Logout</button></form>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">Logout</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -179,57 +160,118 @@
     <main class="container py-5">
         @if (TempData["SuccessMessage"] != null)
         {
-            <div class="alert alert-success border-0 shadow-sm glass-panel mb-4">@TempData["SuccessMessage"]</div>
+            <div class="alert alert-success border-0 shadow-sm glass-panel mb-4">
+                <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            </div>
         }
 
         <div class="row mb-5 align-items-center">
             <div class="col-md-6">
-                <div class="d-flex align-items-center mb-1"><span class="pulse-live"></span><small class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Cloud Active</small></div>
+                <div class="d-flex align-items-center mb-1">
+                    <span class="pulse-live"></span>
+                    <small class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Cloud Active</small>
+                </div>
                 <h2 class="fw-bold text-dark">Registry Management</h2>
             </div>
-            <div class="col-md-6 text-md-end"><a asp-action="Create" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow"><i class="bi bi-person-plus-fill me-2"></i> Add Student</a></div>
+            <div class="col-md-6 text-md-end">
+                <a asp-action="Create" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow">
+                    <i class="bi bi-person-plus-fill me-2"></i> Add Student
+                </a>
+            </div>
         </div>
 
         <div class="glass-panel overflow-hidden">
             <div class="p-4 border-bottom bg-white bg-opacity-30">
                 <form asp-action="Index" method="get" class="row g-2 align-items-center">
-                    <div class="col-md-4"><input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control rounded-pill" placeholder="Search by name or ID..."></div>
-                    <div class="col-auto"><button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold">Filter</button></div>
+                    <div class="col-md-4">
+                        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control rounded-pill" placeholder="Search by name or ID...">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold">Filter</button>
+                    </div>
                     @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
                     {
-                        <div class="col-auto"><a asp-action="Index" class="btn btn-outline-secondary rounded-pill">Clear</a></div>
+                        <div class="col-auto">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">Clear</a>
+                        </div>
                     }
                 </form>
             </div>
 
-            <table class="table align-middle mb-0">
-                <thead><tr><th class="ps-4">Identity</th><th>Contact</th><th class="text-center">Status</th><th class="text-end pe-4">Actions</th></tr></thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr class="student-row">
-                            <td class="ps-4"><div class="d-flex align-items-center"><img src="@item.ProfileImageUrl" class="student-img me-3"> <div><div class="fw-bold text-dark">@item.FirstName @item.LastName</div><small class="text-muted">UID: @item.Id</small></div></div></td>
-                            <td class="small text-muted">@item.Email</td>
-                            <td class="text-center"><span class="badge @(item.EnrolmentStatus == "Active" ? "bg-success" : "bg-danger")">@item.EnrolmentStatus</span></td>
-                            <td class="text-end pe-4">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action-circle text-primary me-1"><i class="bi bi-pencil"></i></a>
-                                <form asp-action="SoftDelete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Deactivate student?');"><button type="submit" class="btn-action-circle text-warning border-0 bg-transparent"><i class="bi bi-person-dash"></i></button></form>
-                                @if (isAdmin)
-                                {
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action-circle text-danger"><i class="bi bi-trash3"></i></a>
-                                }
-                            </td>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Identity</th>
+                            <th>Contact</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-end pe-4">Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <i class="bi bi-search fs-1 d-block mb-2"></i>
+                                    No students found matching your criteria.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr class="student-row">
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <img src="@item.ProfileImageUrl" onerror="this.src='/images/default-avatar.png'" class="student-img me-3">
+                                            <div>
+                                                <div class="fw-bold text-dark">@item.FirstName @item.LastName</div>
+                                                <small class="text-muted">UID: @item.Id</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="small text-muted">@item.Email</td>
+                                    <td class="text-center">
+                                        <span class="badge @(item.EnrolmentStatus == "Active" ? "bg-success" : "bg-secondary")">@item.EnrolmentStatus</span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action-circle text-primary me-1" title="Edit Student">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        <form asp-action="SoftDelete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure? This will mark the student as Inactive.');">
+                                            <button type="submit" class="btn-action-circle text-warning border-0 bg-transparent" title="Mark Inactive">
+                                                <i class="bi bi-person-dash"></i>
+                                            </button>
+                                        </form>
+
+                                        @if (isAdmin)
+                                        {
+                                            <!-- THE FIX: Removed the onclick attribute to ensure it redirects to the delete confirmation page -->
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action-circle text-danger" title="Permanent Delete">
+                                                <i class="bi bi-trash3"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
 
             <div class="p-4 border-top d-flex justify-content-between align-items-center">
-                <small class="text-muted fw-bold">Page @currentPage</small>
+                <small class="text-muted fw-bold">Page @currentPage of @totalPages</small>
                 <nav>
                     <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item @(currentPage == 1 ? "disabled" : "")"><a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Prev</a></li>
-                        <li class="page-item @(currentPage == totalPages ? "disabled" : "")"><a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Next</a></li>
+                        <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Prev</a>
+                        </li>
+                        <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Next</a>
+                        </li>
                     </ul>
                 </nav>
             </div>

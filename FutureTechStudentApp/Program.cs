@@ -1,20 +1,21 @@
 using FutureTechStudentApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using AspNet.Security.OAuth.GitHub; // <-- Correct Namespace
+using Azure.Identity;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-// --- APPLICATION INSIGHTS (FOR MARKS) ---
-// Only add Application Insights if a connection string is actually provided
-var appInsightsConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+// Application Insights
+var appInsightsConnectionString = configuration["ApplicationInsights:ConnectionString"];
 if (!string.IsNullOrEmpty(appInsightsConnectionString))
 {
     builder.Services.AddApplicationInsightsTelemetry();
 }
 
-// --- 1. AZURE COSMOS DB SETUP ---
-var configuration = builder.Configuration;
-
+// Services
 string account = configuration["CosmosDb:Account"]!;
 string key = configuration["CosmosDb:Key"]!;
 string databaseName = configuration["CosmosDb:DatabaseName"]!;
@@ -24,11 +25,9 @@ Microsoft.Azure.Cosmos.CosmosClient client = new Microsoft.Azure.Cosmos.CosmosCl
 CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
 
 builder.Services.AddSingleton<ICosmosDbService>(cosmosDbService);
-
-// --- 2. AZURE BLOB STORAGE SETUP ---
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
-// --- 3. GOOGLE OAUTH 2.0 SETUP ---
+// Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -46,14 +45,26 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = configuration["Authentication:Google:ClientId"]!;
     options.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
     options.CallbackPath = "/signin-google";
+})
+.AddGitHub(options => // <-- Added this block
+{
+    options.ClientId = configuration["Authentication:GitHub:ClientId"]!;
+    options.ClientSecret = configuration["Authentication:GitHub:ClientSecret"]!;
+    options.CallbackPath = "/signin-github";
+    options.Scope.Add("user:email");
 });
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(configuration["BlobStorage:ConnectionString1:blobServiceUri"]!);
+    clientBuilder.AddQueueServiceClient(configuration["BlobStorage:ConnectionString1:queueServiceUri"]!);
+    clientBuilder.AddTableServiceClient(configuration["BlobStorage:ConnectionString1:tableServiceUri"]!);
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -62,14 +73,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
-// --- 4. AUTHENTICATION & AUTHORIZATION ---
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Set default route to Login
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

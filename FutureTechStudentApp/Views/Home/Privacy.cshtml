@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null; // Self-contained page
+    Layout = null; 
     ViewData["Title"] = "Privacy and Security Policy";
 }
 
@@ -10,13 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FutureTech Academy</title>
 
-    <!-- Professional Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Consistent Background & Font from Homepage */
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(rgba(10, 15, 30, 0.85), rgba(10, 15, 30, 0.85)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
@@ -25,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Utilities */
         .glass-panel {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
@@ -35,7 +32,6 @@
             border-radius: 1rem;
         }
 
-        /* Navbar */
         .navbar-glass {
             background: rgba(10, 15, 30, 0.6) !important;
             backdrop-filter: blur(20px);
@@ -53,12 +49,10 @@
                 color: #0dcaf0 !important;
             }
 
-        /* Page Header */
         .page-header {
             padding: 80px 0;
         }
 
-        /* Glass Accordion Styling */
         .accordion-item {
             background-color: transparent;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -75,7 +69,6 @@
             box-shadow: none !important;
         }
 
-            /* Style the accordion icon to be white */
             .accordion-button::after {
                 filter: invert(1) grayscale(1) brightness(200%);
             }
@@ -86,7 +79,7 @@
             }
 
             .accordion-button i {
-                color: #0dcaf0; /* Cyan icon color */
+                color: #0dcaf0; 
             }
 
         .accordion-body {
@@ -98,12 +91,10 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Contact Box */
         .contact-box {
             padding: 40px;
         }
 
-        /* Floating Print Button */
         .print-btn {
             position: fixed;
             bottom: 30px;
@@ -134,7 +125,6 @@
             }
         }
 
-        /* Animations */
         .animate-up {
             opacity: 0;
             animation: slideUpFade 0.8s forwards;
@@ -159,7 +149,6 @@
 </head>
 <body>
 
-    <!-- Glass Top Nav -->
     <nav class="navbar navbar-dark navbar-glass sticky-top py-3">
         <div class="container">
             <a class="nav-brand" asp-controller="Home" asp-action="Index">
@@ -169,7 +158,6 @@
         </div>
     </nav>
 
-    <!-- Header Section -->
     <header class="page-header text-center">
         <div class="container animate-up">
             <i class="bi bi-shield-shaded text-info display-2 mb-3"></i>
@@ -187,10 +175,7 @@
                 <p class="text-light opacity-75 mb-5 text-center">
                     At FutureTech Academy, we are committed to transparency and security. This policy outlines what data we collect, how it's used, and the robust measures we take to keep it safe.
                 </p>
-
-                <!-- Rules List -->
                 <div class="accordion" id="privacyRules">
-                    <!-- Rule 1 -->
                     <div class="accordion-item glass-panel">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#rule1">
@@ -210,7 +195,6 @@
                         </div>
                     </div>
 
-                    <!-- Rule 2 -->
                     <div class="accordion-item glass-panel">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule2">
@@ -228,7 +212,6 @@
                         </div>
                     </div>
 
-                    <!-- Rule 3 -->
                     <div class="accordion-item glass-panel">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule3">
@@ -242,7 +225,6 @@
                         </div>
                     </div>
 
-                    <!-- Rule 4 -->
                     <div class="accordion-item glass-panel">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rule4">
@@ -257,7 +239,6 @@
                     </div>
                 </div>
 
-                <!-- Contact Box -->
                 <div class="contact-box glass-panel mt-5">
                     <div class="row align-items-center">
                         <div class="col-md-9">
@@ -281,12 +262,10 @@
         </div>
     </main>
 
-    <!-- Floating Print Button -->
     <button onclick="window.print()" class="btn btn-info rounded-circle shadow print-btn p-3 d-flex align-items-center justify-content-center">
         <i class="bi bi-printer-fill fs-4 text-dark"></i>
     </button>
 
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

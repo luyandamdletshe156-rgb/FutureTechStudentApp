@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11709.299 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutureTechStudentApp", "FutureTechStudentApp\FutureTechStudentApp.csproj", "{7D482411-8281-4B44-9AC3-D1A2D6DE7EEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutureTechStudentApp.Tests", "FutureTechStudentApp.Tests\FutureTechStudentApp.Tests.csproj", "{587E4947-8AEF-40E5-8364-F2D0A60E7E66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BC5095F-DEBD-4745-B36D-CD7CCB80E450}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

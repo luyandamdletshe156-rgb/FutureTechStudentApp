@@ -6,13 +6,16 @@ namespace FutureTechStudentApp.Services
 {
     public class CosmosDbService : ICosmosDbService
     {
+        // The CosmosDbService class is responsible for interacting with Azure Cosmos DB.
+        // It uses the CosmosClient to perform CRUD operations on the Student entities stored in a specific container.
+        // The constructor initializes the container reference, and the methods provide functionality to get students, add a student, get a student by ID, update a student, delete a student, and count active students.
         private readonly Container _container;
-
+        
         public CosmosDbService(CosmosClient dbClient, string databaseName, string containerName)
         {
             this._container = dbClient.GetContainer(databaseName, containerName);
         }
-
+        
         public async Task<IEnumerable<Student>> GetStudentsAsync(QueryDefinition queryDefinition)
         {
             var iterator = this._container.GetItemQueryIterator<Student>(queryDefinition);
@@ -30,14 +33,19 @@ namespace FutureTechStudentApp.Services
         // Helper for Pagination
         public async Task<int> GetCountAsync(string? searchString)
         {
-            string sql = "SELECT VALUE COUNT(1) FROM c";
+           
+            string sql = "SELECT VALUE COUNT(1) FROM c WHERE 1=1";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                sql += " AND (CONTAINS(LOWER(c.firstName), @search) OR CONTAINS(LOWER(c.lastName), @search) OR CONTAINS(LOWER(c.id), @search))";
+            }
+
             QueryDefinition queryDef = new QueryDefinition(sql);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // 🚨 FIXED: Changed c.email to c.id to match the StudentController search logic
-                sql += " WHERE CONTAINS(LOWER(c.firstName), @search) OR CONTAINS(LOWER(c.lastName), @search) OR CONTAINS(LOWER(c.id), @search)";
-                queryDef = new QueryDefinition(sql).WithParameter("@search", searchString.ToLower());
+                queryDef = queryDef.WithParameter("@search", searchString.ToLower());
             }
 
             var iterator = this._container.GetItemQueryIterator<int>(queryDef);
@@ -54,12 +62,12 @@ namespace FutureTechStudentApp.Services
         {
             await this._container.CreateItemAsync<Student>(student, new PartitionKey(student.Id));
         }
-
+        
         public async Task<Student?> GetStudentAsync(string id)
         {
             try
             {
-                // This is the most efficient way to get a single item in Cosmos DB
+          
                 ItemResponse<Student> response = await this._container.ReadItemAsync<Student>(id, new PartitionKey(id));
                 return response.Resource;
             }
